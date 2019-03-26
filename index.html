@@ -13,20 +13,22 @@
 </head>
 
 <body class="bg-light">
-  <!-- SPEED -->
-  <div class="row">
-    <div class="col-md-4"></div>
-    <div class=" col-md-4">
-      <label for="robot-speed">
-        <strong>Robot speed</strong>
-      </label>
-      <input type="range" min="15" max="80" class="custom-range" id="robot-speed">
+  <!-- INFO -->
+  <div id="info_box" class="row my-4">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+      <div class="alert alert-success">
+        <h4 class="alert-heading">ROS MASTER: <a id="master_ip"></a></h4>
+        <div class="container" id="ConnectionMessage" style="width:inherit">
+
+        </div>
+      </div>
     </div>
-    <div class="col-md-4"></div>
+    <div class="col-md-2"></div>
   </div>
 
   <!-- VIDEO -->
-  <div class="row my-4">
+  <div id="video_box" class="row my-4">
     <div class="col d-flex justify-content-center">
       <img src="" class="p-1 bg-dark" alt="" id="video" />
     </div>
@@ -42,7 +44,7 @@
   </div>
 
   <!-- INFO -->
-  <div class="row my-4">
+  <div id="help_box" class="row my-4">
     <div class="col-md-2"></div>
     <div class="col-md-8">
       <div class="alert alert-success">
@@ -56,6 +58,50 @@
     <div class="col-md-2"></div>
   </div>
 
+  <!-- Settings -->
+  <div id="settings_box" class="row my-4">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+      <div class="alert alert-success">
+        <h4 class="alert-heading">Settings</h4>
+        <label style="width:100%;">ROS IP</label>
+        <div class="form-inline">
+          <input type="text" id="ROS_IP_TEXTBOX" placeholder="ROS BRIDGE IP" style="width:70%">
+          <button class="btn btn-primary" style="width:30%" onclick="changeRosIp()">Change IP</button>
+        </div>
+        <label style="width:100%;">Topic Name</label>
+        <div class="form-inline">
+          <input type="text" id="ROS_TOPIC_TEXTBOX" placeholder="fx: turtle1/cmd_vel" style="width:70%">
+          <button class="btn btn-primary" style="width:30%" onclick="changeTopic()">Change Topic</button>
+        </div>
+        <label for="robot-speed">Robot speed: <a id="speed-text">hej</a></label>
+        <div class="form-inline">
+          <input type="range" min="1" max="20" class="custom-range" id="robot-speed"
+            onchange="updateSpeedText(this.value)" style="height: 30px;">
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2"></div>
+  </div>
+
+  <!-- OPTIONS -->
+  <div id="options_box" class="row my-4">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+      <div class="alert alert-success">
+        <h4 class="alert-heading">Options</h4>
+        <div class="form-inline">
+          <strong style="width:30%">Show Info Box</strong>
+          <input type="checkbox" onchange="toggleContent('info_box')" checked>
+        </div>
+        <div class="form-inline">
+          <strong style="width:30%">Show Video Box</strong>
+          <input type="checkbox" onchange="toggleContent('video_box')" checked>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2"></div>
+  </div>
 
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->

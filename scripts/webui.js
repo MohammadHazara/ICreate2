@@ -1,3 +1,6 @@
+// ROSLIBJS Documentation:
+// http://robotwebtools.org/jsdoc/roslibjs/current/Ros.html
+
 var twist;
 var cmdVel;
 var publishImmidiately = true;
@@ -38,7 +41,7 @@ function initVelocityPublisher() {
     // Init topic object
     cmdVel = new ROSLIB.Topic({
         ros: ros,
-        name: '/cmd_vel',
+        name: 'turtle1/cmd_vel',
         messageType: 'geometry_msgs/Twist'
     });
     // Register publisher within ROS system
@@ -54,7 +57,7 @@ function initTeleopKeyboard() {
         // Initialize the teleop.
         teleop = new KEYBOARDTELEOP.Teleop({
             ros: ros,
-            topic: '/cmd_vel'
+            topic: 'turtle1/cmd_vel'
         });
     }
 
@@ -65,7 +68,9 @@ function initTeleopKeyboard() {
     }
 }
 
-
+function updateSpeedText() {
+    $("#speed-text").text($("#robot-speed").val());
+}
 
 function createJoystick() {
     // Check if joystick was aready created
@@ -113,11 +118,47 @@ function createJoystick() {
     }
 }
 
+function toggleContent(id) {
+    $("#" + id).toggle();
+}
+
+function changeTopic() {
+    var topic = $("#ROS_TOPIC_TEXTBOX").val();
+    console.log(topic);
+    if (!topic.endsWith("/cmd_vel")) {
+        topic += "/cmd_vel";
+    }
+
+    console.log(topic);
+
+    // Init topic object
+    cmdVel = new ROSLIB.Topic({
+        ros: ros,
+        name: topic,
+        messageType: 'geometry_msgs/Twist'
+    });
+    // Register publisher within ROS system
+    cmdVel.advertise();
+}
+
+function changeRosIp() {
+    ros.close();
+    var newIp = $("#ROS_IP_TEXTBOX").val();
+    robot_IP = newIp;
+    ros.url = "ws://" + robot_IP + ":9090";
+    console.log(ros.url);
+    ros.connect(ros.url);
+    $("#master_ip").text(robot_IP);
+}
+
 
 window.onload = function () {
+    updateSpeedText();
     // determine robot address automatically
     //robot_IP = location.hostname;
-    robot_IP = "10.16.239.141";
+    robot_IP = "192.168.0.10";
+    $("#master_ip").text(robot_IP);
+
     // set robot address statically
     // robot_IP = "10.5.10.117";
     console.log(robot_IP);
@@ -125,6 +166,7 @@ window.onload = function () {
     ros = new ROSLIB.Ros({
         url: "ws://" + robot_IP + ":9090"
     });
+
 
     initVelocityPublisher();
     createJoystick();
@@ -138,4 +180,18 @@ window.onload = function () {
         //createJoystick();
         //initTeleopKeyboard();
     };
+
+    ros.on('connection', function () {
+        $("#ConnectionMessage").text("Successfully connected!");
+        console.log('Connected to websocket server.');
+    });
+
+    ros.on('error', function (error) {
+        $("#ConnectionMessage").text("Failed to connect");
+        console.log('Error connecting to websocket server: ', error);
+    });
+
+    ros.on('close', function () {
+        console.log('Connection to websocket server closed.');
+    });
 }
