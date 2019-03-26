@@ -15,10 +15,11 @@
         // Connecting to ROS
         // -----------------
         var connectionMessage = document.getElementById("ConnectionMessage");
-        var ros_ip = "10.16.227.216";
+        var ros_ip = "10.16.239.141";
+        var ros_url = "ws://" + ros_ip + ":9090";
 
         var ros = new ROSLIB.Ros({
-            url: "ws://" + ros_ip + ":9090"
+            url: ros_url
         });
 
         ros.on('connection', function () {
@@ -64,7 +65,7 @@
 
         var listener = new ROSLIB.Topic({
             ros: ros,
-            name: '/listener',
+            name: '/chatter',
             messageType: 'std_msgs/String'
         });
 

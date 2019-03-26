@@ -38,7 +38,7 @@ function initVelocityPublisher() {
     // Init topic object
     cmdVel = new ROSLIB.Topic({
         ros: ros,
-        name: 'turtle1/cmd_vel',
+        name: '/cmd_vel',
         messageType: 'geometry_msgs/Twist'
     });
     // Register publisher within ROS system
@@ -54,7 +54,7 @@ function initTeleopKeyboard() {
         // Initialize the teleop.
         teleop = new KEYBOARDTELEOP.Teleop({
             ros: ros,
-            topic: 'turtle1/cmd_vel'
+            topic: '/cmd_vel'
         });
     }
 
@@ -117,7 +117,7 @@ function createJoystick() {
 window.onload = function () {
     // determine robot address automatically
     //robot_IP = location.hostname;
-    robot_IP = "192.168.0.10";
+    robot_IP = "10.16.239.141";
     // set robot address statically
     // robot_IP = "10.5.10.117";
     console.log(robot_IP);
