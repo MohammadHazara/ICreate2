@@ -21,6 +21,3 @@ def start():
     thread.start()
     thread.join()
     print("Thread Finished")
-
-
-if
